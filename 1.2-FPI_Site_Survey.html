@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>FPI Site Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FBCA20;
+    --yellow-dim: #FEF3B0;
+    --black: #000000;
+    --white: #FFFFFF;
+    --grey-light: #F3F4F6;
+    --grey-mid: #6B7280;
+    --grey-border: #E5E7EB;
+    --grey-dark: #1F2937;
+    --success: #16A34A;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--grey-light);
+    color: var(--black);
+    min-height: 100vh;
+    padding-bottom: 120px;
+  }
+
+  /* ── HEADER ── */
+  .app-header {
+    background: var(--black);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+  }
+  .header-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--yellow);
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+  .header-sub {
+    font-size: 11px;
+    color: var(--grey-mid);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .header-badge {
+    background: var(--yellow);
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    background: #1a1a1a;
+    padding: 10px 16px 12px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--grey-mid);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .progress-label span:last-child { color: var(--yellow); }
+  .progress-bar {
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--yellow);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex;
+    overflow-x: auto;
+    background: var(--black);
+    border-top: 1px solid #222;
+    padding: 0 8px;
+    gap: 4px;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    flex-shrink: 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--grey-mid);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+  }
+  .nav-tab.active {
+    color: var(--yellow);
+    border-bottom-color: var(--yellow);
+  }
+  .nav-tab.done {
+    color: var(--success);
+  }
+  .nav-tab.done::after {
+    content: ' ✓';
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    display: none;
+    padding: 16px;
+    animation: fadeIn 0.2s ease;
+  }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SECTION HEADER ── */
+  .section-title {
+    background: var(--black);
+    color: var(--yellow);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    padding: 12px 16px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    text-transform: uppercase;
+  }
+
+  /* ── CUSTOMER BANNER ── */
+  .customer-banner {
+    background: var(--black);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .customer-banner .field-group:first-child {
+    grid-column: 1 / -1;
+  }
+  .banner-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--grey-mid);
+    margin-bottom: 4px;
+  }
+  .banner-input {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 12px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .banner-input:focus { border-color: var(--yellow); }
+  .banner-input::placeholder { color: #444; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+
+  /* ── QUESTION ROWS ── */
+  .question {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--grey-border);
+  }
+  .question:last-child { border-bottom: none; }
+  .question:nth-child(even) { background: var(--grey-light); }
+  .question-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .question-hint {
+    font-size: 12px;
+    color: var(--grey-mid);
+    margin-bottom: 10px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* ── OPTIONS (radio/checkbox) ── */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .options.inline { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+
+  .opt-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border: 2px solid var(--grey-border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--grey-dark);
+    text-align: left;
+    width: 100%;
+  }
+  .opt-btn.inline-btn {
+    width: auto;
+    flex: 0 0 auto;
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+  .opt-btn .opt-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--grey-border);
+    flex-shrink: 0;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .opt-btn.checkbox .opt-dot { border-radius: 4px; }
+  .opt-btn.selected {
+    border-color: var(--yellow);
+    background: var(--yellow-dim);
+    color: var(--black);
+  }
+  .opt-btn.selected .opt-dot {
+    background: var(--yellow);
+    border-color: var(--yellow);
+  }
+  .opt-btn.selected .opt-dot::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--black);
+  }
+  .opt-btn.checkbox.selected .opt-dot::after {
+    content: '✓';
+    font-size: 11px;
+    color: var(--black);
+    font-weight: 800;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    background: none;
+  }
+
+  /* ── TEXT INPUT ── */
+  .text-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--grey-border);
+    border-radius: 8px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    color: var(--black);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .text-input:focus { border-color: var(--yellow); }
+  textarea.text-input { resize: none; min-height: 80px; }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: var(--yellow-dim);
+    border-left: 4px solid var(--yellow);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #5A4A00;
+    font-style: italic;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  /* ── PHOTO ROWS ── */
+  .photo-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--grey-border);
+    gap: 12px;
+  }
+  .photo-item:last-child { border-bottom: none; }
+  .photo-item:nth-child(even) { background: var(--grey-light); }
+  .photo-label {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--grey-dark);
+    line-height: 1.3;
+  }
+  .photo-actions { display: flex; gap: 8px; align-items: center; }
+  .photo-btn {
+    background: var(--black);
+    color: var(--yellow);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .photo-btn:active { transform: scale(0.96); }
+  .photo-btn.taken {
+    background: var(--success);
+    color: white;
+  }
+  .photo-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 2px solid var(--grey-border);
+    display: none;
+  }
+  .photo-thumb.visible { display: block; }
+  .photo-file-input { display: none; }
+
+  /* ── SKIP TOGGLE ── */
+  .skip-section {
+    background: var(--grey-light);
+    border: 2px dashed var(--grey-border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .skip-section.skipped {
+    border-color: var(--grey-mid);
+    opacity: 0.5;
+  }
+  .skip-label { font-size: 13px; font-weight: 600; color: var(--grey-mid); }
+  .toggle-switch {
+    width: 44px;
+    height: 24px;
+    background: var(--grey-border);
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .toggle-switch.on { background: var(--yellow); }
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle-switch.on::after { transform: translateX(20px); }
+  .collapsible { overflow: hidden; transition: max-height 0.3s ease; max-height: 2000px; }
+  .collapsible.collapsed { max-height: 0; }
+
+  /* ── NAV BUTTONS ── */
+  .nav-btns {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border-top: 1px solid var(--grey-border);
+    padding: 12px 16px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  }
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-back {
+    background: var(--grey-light);
+    color: var(--grey-mid);
+    border: 2px solid var(--grey-border);
+  }
+  .btn-next {
+    background: var(--yellow);
+    color: var(--black);
+  }
+  .btn-fresh {
+    flex: 0 0 48px;
+    background: var(--grey-light);
+    color: #EF4444;
+    border: 2px solid #FECACA;
+    font-size: 18px;
+    padding: 0;
+  }
+  .btn-submit {
+    background: var(--black);
+    color: var(--yellow);
+  }
+
+  /* ── SUBMIT PAGE ── */
+  .submit-options { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+  .submit-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    border: 2px solid var(--grey-border);
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Barlow', sans-serif;
+    text-align: left;
+    width: 100%;
+  }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn.primary { background: var(--black); border-color: var(--black); }
+  .submit-btn.yellow-btn { background: var(--yellow); border-color: var(--yellow); }
+  .submit-icon { font-size: 24px; flex-shrink: 0; }
+  .submit-title { font-size: 15px; font-weight: 700; color: var(--black); }
+  .submit-btn.primary .submit-title { color: var(--yellow); }
+  .submit-btn.yellow-btn .submit-title { color: var(--black); }
+  .submit-desc { font-size: 12px; color: var(--grey-mid); margin-top: 2px; }
+  .submit-btn.primary .submit-desc { color: #888; }
+  .submit-btn.yellow-btn .submit-desc { color: #5A4A00; }
+
+  /* ── SUMMARY ── */
+  .summary-card {
+    background: var(--black);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .summary-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--yellow);
+    letter-spacing: 0.5px;
+  }
+  .summary-meta { font-size: 13px; color: var(--grey-mid); margin-top: 4px; }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--grey-border);
+    font-size: 13px;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-key { color: var(--grey-mid); font-weight: 600; }
+  .summary-val { color: var(--black); font-weight: 600; text-align: right; max-width: 55%; }
+
+  /* ── EMAIL MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: 20px 20px 0 0;
+    padding: 24px 20px 40px;
+    width: 100%;
+    max-width: 600px;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--black);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .modal-input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid var(--grey-border);
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 12px;
+  }
+  .modal-input:focus { border-color: var(--yellow); }
+  .modal-btns { display: flex; gap: 10px; }
+  .modal-cancel {
+    flex: 1;
+    padding: 14px;
+    background: var(--grey-light);
+    border: 2px solid var(--grey-border);
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--grey-mid);
+  }
+  .modal-send {
+    flex: 2;
+    padding: 14px;
+    background: var(--yellow);
+    border: none;
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: var(--black);
+    color: var(--yellow);
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 300;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── PRINT / PDF ── */
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { padding: 0; background: white; font-family: Arial, sans-serif; }
+    .app-header, .nav-tabs, .nav-btns, .progress-wrap, .submit-options, .toast { display: none !important; }
+
+    /* Show all sections in print */
+    .section { display: block !important; padding: 0; margin-bottom: 20px; }
+
+    /* Print header */
+    .print-header {
+      display: flex !important;
+      background: #000 !important;
+      color: #FBCA20 !important;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .print-header-title { font-size: 22px; font-weight: 900; letter-spacing: 1px; }
+    .print-header-sub { font-size: 12px; color: #aaa; margin-top: 3px; }
+    .print-header-right { text-align: right; font-size: 12px; color: #aaa; }
+
+    .section-title {
+      background: #000 !important;
+      color: #FBCA20 !important;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      border-radius: 0;
+    }
+
+    .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; margin-bottom: 12px; }
+    .question { padding: 8px 12px; border-bottom: 1px solid #eee; }
+    .question:nth-child(even) { background: #F3F4F6 !important; }
+    .question-label { font-size: 11px; font-weight: 700; margin-bottom: 2px; }
+    .question-hint { font-size: 10px; color: #6B7280; margin-bottom: 4px; }
+
+    /* Only show selected options in print */
+    .opt-btn { display: none !important; }
+    .opt-btn.selected { display: inline-block !important; border: 1px solid #FBCA20; background: #FEF3B0 !important; color: #000 !important; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; margin: 2px; }
+    .opt-dot { display: none !important; }
+
+    .text-input {
+      border: none !important;
+      border-bottom: 1px solid #ccc !important;
+      padding: 2px 0 !important;
+      font-size: 11px;
+      background: transparent !important;
+    }
+    textarea.text-input { min-height: 30px; }
+
+    .info-box { display: none !important; }
+    .skip-section { display: none !important; }
+
+    /* Collapsed roof sections — show if toggled on, hide if not */
+    .collapsible.collapsed { display: none !important; }
+    .collapsible { display: block !important; }
+
+    /* Customer banner */
+    .customer-banner {
+      background: #000 !important;
+      color: white;
+      padding: 12px;
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+      border-radius: 0;
+    }
+    .customer-banner .field-group:first-child { grid-column: 1/-1; }
+    .banner-label { color: #888 !important; font-size: 9px; font-weight: 700; text-transform: uppercase; }
+    .banner-input {
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 1px solid #444 !important;
+      color: white !important;
+      font-size: 12px;
+      padding: 2px 0;
+    }
+
+    /* PHOTOS GRID IN PRINT */
+    .photo-item { display: flex; padding: 6px 12px; border-bottom: 1px solid #eee; align-items: center; gap: 10px; page-break-inside: avoid; }
+    .photo-label { font-size: 11px; flex: 1; }
+    .photo-btn { display: none !important; }
+    .photo-file-input { display: none !important; }
+    .photo-thumb { display: none !important; }
+    .photo-thumb.visible { display: block !important; width: 80px !important; height: 80px !important; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
+    .photo-taken-label { font-size: 10px; font-weight: 700; color: #16A34A; }
+    .photo-not-taken-label { font-size: 10px; color: #ccc; }
+
+    /* PRINT PHOTO GRID */
+    .print-photo-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 12px;
+    }
+    .print-photo-cell {
+      text-align: center;
+      page-break-inside: avoid;
+    }
+    .print-photo-cell img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      display: block;
+    }
+    .print-photo-cell .print-photo-label {
+      font-size: 9px;
+      color: #6B7280;
+      margin-top: 4px;
+    }
+    .print-photo-empty {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #F3F4F6;
+      border: 1px dashed #ccc;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: #ccc;
+    }
+
+    /* Summary card in print */
+    .summary-card { background: #000 !important; padding: 12px; }
+    .summary-name { color: #FBCA20 !important; font-size: 18px !important; }
+    .summary-meta { color: #888 !important; }
+    .summary-row { font-size: 11px; padding: 6px 12px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+    .summary-key { color: #6B7280; }
+    .summary-val { color: #000; font-weight: 700; }
+
+    @page { margin: 12mm; size: A4; }
+    h1, h2 { page-break-after: avoid; }
+  }
+
+  /* Hide print-only elements on screen */
+  .print-only { display: none; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="header-inner">
+    <div>
+      <div class="header-logo">Full Power Installations</div>
+      <div class="header-sub">Solar PV Site Survey</div>
+    </div>
+
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+  <div class="nav-tabs" id="nav-tabs">
+    <button class="nav-tab active" onclick="goTo(0)">Customer</button>
+    <button class="nav-tab" onclick="goTo(1)">Roof A</button>
+    <button class="nav-tab" onclick="goTo(2)">Roof B</button>
+    <button class="nav-tab" onclick="goTo(3)">Roof C</button>
+    <button class="nav-tab" onclick="goTo(4)">Photos</button>
+    <button class="nav-tab" onclick="goTo(5)">Electrics</button>
+    <button class="nav-tab" onclick="goTo(6)">Prefs</button>
+    <button class="nav-tab" onclick="goTo(7)">Submit</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SECTION 0: CUSTOMER DETAILS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section active" id="section-0">
+  <div class="section-title">Section 1 · Customer Details</div>
+
+  <div class="customer-banner card" style="border-radius:0 0 10px 10px; margin-bottom:12px;">
+    <div class="field-group" style="grid-column:1/-1">
+      <div class="banner-label">Customer Name</div>
+      <input class="banner-input" id="f-customer-name" placeholder="e.g. John Smith" oninput="autoSave()">
+    </div>
+    <div class="field-group" style="grid-column:1/-1">
+      <div class="banner-label">Address</div>
+      <input class="banner-input" id="f-address" placeholder="Street address" oninput="autoSave()">
+    </div>
+    <div class="field-group">
+      <div class="banner-label">Postcode</div>
+      <input class="banner-input" id="f-postcode" placeholder="e.g. OL16 1AB" oninput="autoSave()" style="text-transform:uppercase;">
+    </div>
+    <div class="field-group">
+      <div class="banner-label">Survey Date</div>
+      <input class="banner-input" type="date" id="f-date" oninput="autoSave()">
+    </div>
+    <div class="field-group" style="grid-column:1/-1">
+      <div class="banner-label">Surveyor</div>
+      <input class="banner-input" id="f-surveyor" placeholder="Your name" oninput="autoSave()">
+    </div>
+  </div>
+
+  <div class="card">
+
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SECTION 1: ROOF A (MAIN) -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="section-1">
+  <div class="section-title">Section 2A · Main Roof</div>
+  <div class="info-box">📐 Roof measurements will be captured by drone — just tick the type and answer the questions below.</div>
+  <div class="card">
+    <div class="question">
+      <div class="question-label">Roof material</div>
+      <div class="options inline" data-field="f-roofA-material" data-type="radio">
+        <button class="opt-btn inline-btn" data-val="Concrete Tile">Concrete Tile</button>
+        <button class="opt-btn inline-btn" data-val="Clay Tile">Clay Tile</button>
+        <button class="opt-btn inline-btn" data-val="Slate">Slate</button>
+        <button class="opt-btn inline-btn" data-val="Flat Roof">Flat Roof</button>
+        <button class="opt-btn inline-btn" data-val="Metal">Metal</button>
+        <button class="opt-btn inline-btn" data-val="Other">Other</button>
+      </div>
+    </div>
+    <div class="question">
+      <div class="question-label">Which way does it face?</div>
+      <div class="question-hint">Stand in the front garden and look at the house</div>
+      <div class="options inline" data-field="f-roofA-facing" data-type="radio">
+        <button class="opt-btn inline-btn" data-val="South">South ⭐</button>
+        <button class="opt-btn inline-btn" data-val="South-East">South-East</button>
+        <button class="opt-btn inline-btn" data-val="South-West">South-West</button>
+        <button class="opt-btn inline-btn" data-val="East">East</button>
+        <button class="opt-btn inline-btn" data-val="West">West</button>
+        <button class="opt-btn inline-btn" data-val="North">North</button>
+        <button class="opt-btn inline-btn" data-val="Not sure">Not sure</button>
+      </div>
+    </div>
+    <div class="question">
+      <div class="question-label">Roof condition</div>
+      <div class="question-hint">Visual check — any broken tiles, sagging, damp?</div>
+      <div class="options" data-field="f-roofA-condition" data-type="radio">
+        <button class="opt-btn" data-val="Looks good">✅ Looks good</button>
+        <button class="opt-btn" data-val="Needs some work">⚠️ Needs some work</button>
+        <button class="opt-btn" data-val="Not sure">❓ Not sure</button>
+      </div>
+    </div>
+    <div class="question">
+      <div class="question-label">Any obstructions on the roof?</div>
+      <div class="question-hint">Velux windows, chimney, aerial, flue, dormer</div>
+      <div class="options inline" data-field="f-roofA-obs" data-type="radio">
+        <button class="opt-btn inline-btn" data-val="None">None ✓</button>
+        <button class="opt-btn inline-btn" data-val="Yes">Yes — describe below</button>
+      </div>
+      <textarea class="text-input" style="margin-top:10px" id="f-roofA-obs-notes" rows="2" placeholder="Describe obstructions if any..." oninput="autoSave()"></textarea>
+    </div>
+    <div class="question">
+      <div class="question-label">Any shading?</div>
+      <div class="question-hint">Trees, buildings, chimney shadow etc.</div>
+      <div class="options inline" data-field="f-roofA-shade" data-type="radio">
+        <button class="opt-btn inline-btn" data-val="No shading">No shading</button>
+        <button class="opt-btn inline-btn" data-val="Yes">Yes — describe below</button>
+      </div>
+      <textarea class="text-input" style="margin-top:10px" id="f-roofA-shade-notes" rows="2" placeholder="Describe shading if any..." oninput="autoSave()"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SECTION 2: ROOF B -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="section-2">
+  <div class="section-title">Section 2B · Second Roof Slope</div>
+
+  <div class="skip-section" id="skip-roofB" onclick="toggleSkip('roofB')">
+    <div class="skip-label">Is there a usable second roof slope?</div>
+    <div class="toggle-switch" id="toggle-roofB"></div>
+  </div>
+
+  <div class="collapsible collapsed" id="content-roofB">
+    <div class="info-box">Only fill this in if you think a second roof slope might be useful for extra panels.</div>
+    <div class="card">
+      <div class="question">
+        <div class="question-label">Roof material</div>
+        <div class="options inline" data-field="f-roofB-material" data-type="radio">
+          <button class="opt-btn inline-btn" data-val="Concrete Tile">Concrete Tile</button>
+          <button class="opt-btn inline-btn" data-val="Clay Tile">Clay Tile</button>
+          <button class="opt-btn inline-btn" data-val="Slate">Slate</button>
+          <button class="opt-btn inline-btn" data-val="Flat Roof">Flat Roof</button>
+          <button class="opt-btn inline-btn" data-val="Metal">Metal</button>
+          <button class="opt-btn inline-btn" data-val="Other">Other</button>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">Which way does it face?</div>
+        <div class="options inline" data-field="f-roofB-facing" data-type="radio">
+          <button class="opt-btn inline-btn" data-val="South">South ⭐</button>
+          <button class="opt-btn inline-btn" data-val="South-East">South-East</button>
+          <button class="opt-btn inline-btn" data-val="South-West">South-West</button>
+          <button class="opt-btn inline-btn" data-val="East">East</button>
+          <button class="opt-btn inline-btn" data-val="West">West</button>
+          <button class="opt-btn inline-btn" data-val="Other">Other</button>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">Roof condition</div>
+        <div class="options" data-field="f-roofB-condition" data-type="radio">
+          <button class="opt-btn" data-val="Looks good">✅ Looks good</button>
+          <button class="opt-btn" data-val="Needs some work">⚠️ Needs some work</button>
+          <button class="opt-btn" data-val="Not sure">❓ Not sure</button>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">Any obstructions or shading?</div>
+        <div class="options inline" data-field="f-roofB-obs" data-type="radio">
+          <button class="opt-btn inline-btn" data-val="None">None ✓</button>
+          <button class="opt-btn inline-btn" data-val="Yes">Yes — describe below</button>
+        </div>
+        <textarea class="text-input" style="margin-top:10px" id="f-roofB-obs-notes" rows="2" placeholder="Describe if any..." oninput="autoSave()"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SECTION 3: ROOF C -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="section-3">
+  <div class="section-title">Section 2C · Third Roof Slope</div>
+
+  <div class="skip-section" id="skip-roofC" onclick="toggleSkip('roofC')">
+    <div class="skip-label">Is there a usable third roof slope?</div>
+    <div class="toggle-switch" id="toggle-roofC"></div>
+  </div>
+
+  <div class="collapsible collapsed" id="content-roofC">
+    <div class="info-box">Only fill this in if there is a third usable roof slope.</div>
+    <div class="card">
+      <div class="question">
+        <div class="question-label">Roof material</div>
+        <div class="options inline" data-field="f-roofC-material" data-type="radio">
+          <button class="opt-btn inline-btn" data-val="Concrete Tile">Concrete Tile</button>
+          <button class="opt-btn inline-btn" data-val="Clay Tile">Clay Tile</button>
+          <button class="opt-btn inline-btn" data-val="Slate">Slate</button>
+          <button class="opt-btn inline-btn" data-val="Flat Roof">Flat Roof</button>
+          <button class="opt-btn inline-btn" data-val="Metal">Metal</button>
+          <button class="opt-btn inline-btn" data-val="Other">Other</button>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">Which way does it face?</div>
+        <div class="options inline" data-field="f-roofC-facing" data-type="radio">
+          <button class="opt-btn inline-btn" data-val="South">South ⭐</button>
+          <button class="opt-btn inline-btn" data-val="South-East">South-East</button>
+          <button class="opt-btn inline-btn" data-val="South-West">South-West</button>
+          <button class="opt-btn inline-btn" data-val="East">East</button>
+          <button class="opt-btn inline-btn" data-val="West">West</button>
+          <button class="opt-btn inline-btn" data-val="Other">Other</button>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">Roof condition</div>
+        <div class="options" data-field="f-roofC-condition" data-type="radio">
+          <button class="opt-btn" data-val="Looks good">✅ Looks good</button>
+          <button class="opt-btn" data-val="Needs some work">⚠️ Needs some work</button>
+          <button class="opt-btn" data-val="Not sure">❓ Not sure</button>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">Any obstructions or shading?</div>
+        <div class="options inline" data-field="f-roofC-obs" data-type="radio">
+          <button class="opt-btn inline-btn" data-val="None">None ✓</button>
+          <button class="opt-btn inline-btn" data-val="Yes">Yes — describe below</button>
+        </div>
+        <textarea class="text-input" style="margin-top:10px" id="f-roofC-obs-notes" rows="2" placeholder="Describe if any..." oninput="autoSave()"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SECTION 4: PHOTOS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="section-4">
+  <div class="section-title">Section 3 · Photos 📷</div>
+  <div class="info-box">Take ALL of these photos — tap the camera button to open your phone camera. Essential for designing the system back in the office.</div>
+
+  <div class="card">
+    <div id="photo-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SECTION 5: ELECTRICS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="section-5">
+  <div class="section-title">Section 4 · Electrics</div>
+  <div class="info-box">You don't need to be an electrician — just look at the labels and tick what you see. If unsure, take a photo and write "not sure".</div>
+
+  <div class="card">
+    <div class="question">
+      <div class="question-label">How many phases?</div>
+      <div class="question-hint">Look at the fuse board — single phase is most common in homes</div>
+      <div class="options" data-field="f-phases" data-type="radio">
+        <button class="opt-btn" data-val="Single phase">⚡ Single phase (1 big cable in)</button>
+        <button class="opt-btn" data-val="Three phase">⚡⚡⚡ Three phase (3 cables)</button>
+        <button class="opt-btn" data-val="Not sure">📷 Not sure — took photo</button>
+      </div>
+    </div>
+    <div class="question">
+      <div class="question-label">Main fuse size</div>
+      <div class="question-hint">Look for a number on the main fuse / cut-out at the top of the board</div>
+      <div class="options inline" data-field="f-fuse" data-type="radio">
+        <button class="opt-btn inline-btn" data-val="60A">60A</button>
+        <button class="opt-btn inline-btn" data-val="80A">80A</button>
+        <button class="opt-btn inline-btn" data-val="100A">100A</button>
+        <button class="opt-btn inline-btn" data-val="125A">125A</button>
+        <button class="opt-btn inline-btn" data-val="Not sure">Not sure</button>
+      </div>
+    </div>
+    <div class="question">
+      <div class="question-label">Spare slots in the fuse board?</div>
+      <div class="question-hint">Open the fuse board door — are there any empty spaces?</div>
+      <div class="options" data-field="f-spare-slots" data-type="radio">
+        <button class="opt-btn" data-val="Yes">✅ Yes, at least 1 spare</button>
+        <button class="opt-btn" data-val="Looks full">❌ Looks full</button>
+        <button class="opt-btn" data-val="Not sure">📷 Not sure — took photo</button>
+      </div>
+    </div>
+    <div class="question">
+      <div class="question-label">Meter type</div>
+      <div class="question-hint">Look at the meter — does it have a digital display?</div>
+      <div class="options" data-field="f-meter" data-type="radio">
+        <button class="opt-btn" data-val="Smart meter">📱 Smart meter (digital screen)</button>
+        <button class="opt-btn" data-val="Old-style">🔢 Old-style (spinning dial / basic digital)</button>
+        <button class="opt-btn" data-val="Not sure">❓ Not sure</button>
+      </div>
+    </div>
+    <div class="question">
+      <div class="question-label">Where could the inverter go?</div>
+      <div class="question-hint">A shaded, dry indoor wall — garage, utility room, or loft near hatch</div>
+      <input class="text-input" id="f-inverter-location" placeholder="e.g. Garage north wall..." oninput="autoSave()">
+    </div>
+    <div class="question">
+      <div class="question-label">Any obvious issues with the electrics?</div>
+      <div class="question-hint">Old wiring, unusual setup, very old board etc.</div>
+      <div class="options" data-field="f-elec-issues" data-type="radio">
+        <button class="opt-btn" data-val="Looks standard">✅ Looks standard</button>
+        <button class="opt-btn" data-val="Looks unusual">⚠️ Looks unusual — describe below</button>
+      </div>
+      <textarea class="text-input" style="margin-top:10px" id="f-elec-notes" rows="2" placeholder="Notes..." oninput="autoSave()"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SECTION 6: PREFERENCES -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="section-6">
+  <div class="section-title">Section 5 · Customer Preferences</div>
+
+  <div class="card">
+    <div class="question">
+      <div class="question-label">Any specific requests or concerns?</div>
+      <div class="question-hint">e.g. neighbours, planning permission, aesthetics</div>
+      <textarea class="text-input" id="f-requests" rows="3" placeholder="Write any requests or concerns..." oninput="autoSave()"></textarea>
+    </div>
+    <div class="question">
+      <div class="question-label">Access notes for installation day</div>
+      <div class="question-hint">Parking, narrow road, gates, dogs, alarm codes etc.</div>
+      <textarea class="text-input" id="f-access" rows="3" placeholder="Access notes..." oninput="autoSave()"></textarea>
+    </div>
+    <div class="question">
+      <div class="question-label">Any other notes</div>
+      <div class="question-hint">Anything else useful for the office to know</div>
+      <textarea class="text-input" id="f-notes" rows="4" placeholder="Additional notes..." oninput="autoSave()"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SECTION 7: SUBMIT -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" id="section-7">
+  <div class="section-title">Submit Survey</div>
+
+  <div class="summary-card" id="summary-card">
+    <div class="summary-name" id="summary-name">—</div>
+    <div class="summary-meta" id="summary-meta">—</div>
+  </div>
+
+  <div class="card" id="summary-details"></div>
+
+  <div class="submit-options">
+    <button class="submit-btn yellow-btn" onclick="downloadPDF()">
+      <span class="submit-icon">📄</span>
+      <div>
+        <div class="submit-title">Download as PDF</div>
+        <div class="submit-desc">Saves a full PDF with all answers and photos</div>
+      </div>
+    </button>
+    <button class="submit-btn primary" onclick="shareWhatsApp()" style="margin-top:4px;">
+      <span class="submit-icon">💬</span>
+      <div>
+        <div class="submit-title">Send via WhatsApp</div>
+        <div class="submit-desc">Save the PDF first, then share it to the office WhatsApp</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- NAV BUTTONS -->
+<div class="nav-btns">
+  <button class="btn btn-back" id="btn-back" onclick="prevSection()">← Back</button>
+  <button class="btn btn-next" id="btn-next" onclick="nextSection()">Next →</button>
+  <button class="btn btn-fresh" onclick="clearForm()" title="Start Fresh">🗑️</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ──
+let currentSection = 0;
+const totalSections = 8;
+const formData = {};
+const photoData = {};
+
+const PHOTOS = [
+  { id: 'front', label: 'Front of the house (full view)' },
+  { id: 'main-roof', label: 'Main roof — from ground level' },
+  { id: 'roof-tiles', label: 'Main roof — close-up of tiles' },
+  { id: 'obstructions', label: 'Any obstructions (chimney, velux, aerial etc.)' },
+  { id: 'roof-b', label: 'Second roof slope (if applicable)' },
+  { id: 'roof-c', label: 'Third roof slope (if applicable)' },
+  { id: 'consumer-unit', label: 'Consumer unit (fuse board) — front & inside' },
+  { id: 'meter', label: 'Electricity meter' },
+  { id: 'inverter-loc', label: 'Proposed inverter location' },
+  { id: 'cable-route', label: 'Cable route from roof to fuse board' },
+  { id: 'loft', label: 'Loft hatch / loft interior (if accessible)' },
+];
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  buildPhotoList();
+  bindOptionButtons();
+  loadSaved();
+  updateNav();
+  updateProgress();
+  // set today as default date
+  const dateField = document.getElementById('f-date');
+  if (dateField && !dateField.value) {
+    dateField.value = new Date().toISOString().split('T')[0];
+  }
+});
+
+// ── BUILD PHOTO LIST ──
+function buildPhotoList() {
+  const list = document.getElementById('photo-list');
+  PHOTOS.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'photo-item';
+    item.innerHTML = `
+      <div class="photo-label">${p.label}</div>
+      <div class="photo-actions">
+        <img class="photo-thumb" id="thumb-${p.id}" alt="">
+        <label class="photo-btn" id="btn-${p.id}" for="file-${p.id}">
+          <span>📷</span> Take
+        </label>
+        <input type="file" accept="image/*" capture="environment" class="photo-file-input" id="file-${p.id}" onchange="photoTaken('${p.id}', this)">
+      </div>`;
+    list.appendChild(item);
+  });
+}
+
+function photoTaken(id, input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = e => {
+    photoData[id] = e.target.result;
+    const thumb = document.getElementById('thumb-' + id);
+    const btn = document.getElementById('btn-' + id);
+    if (thumb) { thumb.src = e.target.result; thumb.classList.add('visible'); }
+    if (btn) { btn.classList.add('taken'); btn.innerHTML = '<span>✓</span> Done'; }
+    autoSave();
+    updateProgress();
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── OPTION BUTTONS ──
+function bindOptionButtons() {
+  document.querySelectorAll('.options').forEach(group => {
+    const field = group.dataset.field;
+    const type = group.dataset.type;
+    group.querySelectorAll('.opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (type === 'radio') {
+          group.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          formData[field] = btn.dataset.val;
+        } else {
+          btn.classList.toggle('selected');
+          if (!formData[field]) formData[field] = [];
+          const arr = formData[field];
+          const idx = arr.indexOf(btn.dataset.val);
+          if (idx >= 0) arr.splice(idx, 1);
+          else arr.push(btn.dataset.val);
+        }
+        autoSave();
+        updateProgress();
+      });
+    });
+  });
+}
+
+// ── SKIP TOGGLES ──
+const skipState = { roofB: false, roofC: false };
+
+function toggleSkip(roof) {
+  skipState[roof] = !skipState[roof];
+  const toggle = document.getElementById('toggle-' + roof);
+  const content = document.getElementById('content-' + roof);
+  const wrap = document.getElementById('skip-' + roof);
+  toggle.classList.toggle('on', skipState[roof]);
+  content.classList.toggle('collapsed', !skipState[roof]);
+  wrap.classList.toggle('skipped', !skipState[roof]);
+  autoSave();
+}
+
+// ── NAVIGATION ──
+function goTo(index) {
+  document.getElementById('section-' + currentSection).classList.remove('active');
+  document.querySelectorAll('.nav-tab')[currentSection].classList.remove('active');
+  currentSection = index;
+  document.getElementById('section-' + currentSection).classList.add('active');
+  document.querySelectorAll('.nav-tab')[currentSection].classList.add('active');
+  updateNav();
+  updateProgress();
+  window.scrollTo(0, 0);
+  if (currentSection === 7) buildSummary();
+}
+
+function nextSection() {
+  if (currentSection < totalSections - 1) goTo(currentSection + 1);
+}
+function prevSection() {
+  if (currentSection > 0) goTo(currentSection - 1);
+}
+
+function updateNav() {
+  document.getElementById('btn-back').style.display = currentSection === 0 ? 'none' : '';
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.textContent = currentSection === totalSections - 1 ? '✓ Done' : 'Next →';
+  nextBtn.className = 'btn ' + (currentSection === totalSections - 1 ? 'btn-submit' : 'btn-next');
+  if (currentSection === totalSections - 1) nextBtn.onclick = () => {};
+  else nextBtn.onclick = nextSection;
+}
+
+// ── PROGRESS ──
+function updateProgress() {
+  const allFields = document.querySelectorAll('[data-field]');
+  let filled = 0;
+  let total = allFields.length;
+  allFields.forEach(g => {
+    if (formData[g.dataset.field]) filled++;
+  });
+  const photoTotal = PHOTOS.length;
+  const photoDone = Object.keys(photoData).length;
+  total += photoTotal;
+  filled += photoDone;
+  const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+// ── AUTO SAVE ──
+function autoSave() {
+  try {
+    const allInputs = document.querySelectorAll('input:not([type=file]):not([type=date]), textarea');
+    allInputs.forEach(el => { if (el.id) formData[el.id] = el.value; });
+    const dateEl = document.getElementById('f-date');
+    if (dateEl) formData['f-date'] = dateEl.value;
+    localStorage.setItem('fpi-survey', JSON.stringify({ formData, skipState }));
+  } catch(e) {}
+}
+
+function loadSaved() {
+  try {
+    const saved = localStorage.getItem('fpi-survey');
+    if (!saved) return;
+    const data = JSON.parse(saved);
+    if (data.formData) {
+      Object.assign(formData, data.formData);
+      // restore text inputs
+      Object.keys(formData).forEach(key => {
+        const el = document.getElementById(key);
+        if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.type !== 'file') {
+          el.value = formData[key] || '';
+        }
+      });
+      // restore option buttons
+      document.querySelectorAll('.options').forEach(group => {
+        const field = group.dataset.field;
+        const val = formData[field];
+        if (!val) return;
+        group.querySelectorAll('.opt-btn').forEach(btn => {
+          if (Array.isArray(val)) {
+            if (val.includes(btn.dataset.val)) btn.classList.add('selected');
+          } else {
+            if (btn.dataset.val === val) btn.classList.add('selected');
+          }
+        });
+      });
+    }
+    if (data.skipState) {
+      Object.keys(data.skipState).forEach(roof => {
+        if (data.skipState[roof]) {
+          skipState[roof] = false;
+          toggleSkip(roof);
+        }
+      });
+    }
+  } catch(e) {}
+}
+
+// ── BUILD SUMMARY ──
+function buildSummary() {
+  const name = formData['f-customer-name'] || 'Unknown Customer';
+  const date = formData['f-date'] ? new Date(formData['f-date']).toLocaleDateString('en-GB') : 'No date';
+  const surveyor = formData['f-surveyor'] || 'Unknown';
+  document.getElementById('summary-name').textContent = name;
+  document.getElementById('summary-meta').textContent = `${date}  ·  Surveyor: ${surveyor}`;
+
+  const rows = [
+    ['Address', formData['f-address']],
+    ['Postcode', formData['f-postcode']],
+    ['Main roof facing', formData['f-roofA-facing']],
+    ['Main roof material', formData['f-roofA-material']],
+    ['Main roof condition', formData['f-roofA-condition']],
+    ['2nd roof', skipState.roofB ? (formData['f-roofB-facing'] || 'Yes') : 'Not applicable'],
+    ['3rd roof', skipState.roofC ? (formData['f-roofC-facing'] || 'Yes') : 'Not applicable'],
+    ['Photos taken', Object.keys(photoData).length + ' / ' + PHOTOS.length],
+    ['Main fuse', formData['f-fuse']],
+    ['Phases', formData['f-phases']],
+    ['Meter type', formData['f-meter']],
+    ['Inverter location', formData['f-inverter-location']],
+  ];
+
+  const card = document.getElementById('summary-details');
+  card.innerHTML = rows.filter(r => r[1]).map(r => `
+    <div class="summary-row">
+      <span class="summary-key">${r[0]}</span>
+      <span class="summary-val">${r[1]}</span>
+    </div>`).join('');
+}
+
+// ── PDF DOWNLOAD ──
+function downloadPDF() {
+  // Build print photo grid before printing
+  buildPrintPhotoGrid();
+  showToast('Opening PDF save dialog...');
+  setTimeout(() => window.print(), 400);
+}
+
+// Build a print-friendly photo grid that appears only in print
+function buildPrintPhotoGrid() {
+  // Remove any existing print grid
+  const existing = document.getElementById('print-photo-grid');
+  if (existing) existing.remove();
+
+  const section = document.getElementById('section-4');
+  const grid = document.createElement('div');
+  grid.id = 'print-photo-grid';
+  grid.className = 'print-photo-grid print-only';
+
+  PHOTOS.forEach(p => {
+    const cell = document.createElement('div');
+    cell.className = 'print-photo-cell';
+    if (photoData[p.id]) {
+      cell.innerHTML = `<img src="${photoData[p.id]}" alt="${p.label}"><div class="print-photo-label">${p.label}</div>`;
+    } else {
+      cell.innerHTML = `<div class="print-photo-empty">No photo</div><div class="print-photo-label">${p.label}</div>`;
+    }
+    grid.appendChild(cell);
+  });
+  section.appendChild(grid);
+}
+
+// ── WHATSAPP ──
+function shareWhatsApp() {
+  const customer = formData['f-customer-name'] || 'Site Survey';
+  const date = formData['f-date'] ? new Date(formData['f-date']).toLocaleDateString('en-GB') : '';
+  const address = formData['f-address'] || '';
+  const surveyor = formData['f-surveyor'] || '';
+  const photoCount = Object.keys(photoData).length;
+
+  const msg = encodeURIComponent(
+    `📋 *FPI Site Survey Complete*\n` +
+    `👤 Customer: ${customer}\n` +
+    `📍 Address: ${address}\n` +
+    `📅 Date: ${date}\n` +
+    `🔧 Surveyor: ${surveyor}\n` +
+    `📷 Photos taken: ${photoCount} of ${PHOTOS.length}\n\n` +
+    `_PDF saved to phone — sharing now._`
+  );
+
+  // First trigger PDF save, then open WhatsApp
+  buildPrintPhotoGrid();
+  showToast('Save the PDF, then WhatsApp will open...');
+  setTimeout(() => {
+    window.print();
+    setTimeout(() => {
+      window.open(`https://wa.me/?text=${msg}`, '_blank');
+    }, 1500);
+  }, 400);
+}
+
+// ── CLEAR ──
+function clearForm() {
+  if (!confirm('Start fresh? This will clear ALL data and photos and take you back to the beginning.')) return;
+  try { localStorage.removeItem('fpi-survey'); } catch(e) {}
+  // Clear all photoData keys
+  Object.keys(photoData).forEach(k => delete photoData[k]);
+  // Clear all formData keys
+  Object.keys(formData).forEach(k => delete formData[k]);
+  // Reset all inputs
+  document.querySelectorAll('input:not([type=file]), textarea').forEach(el => el.value = '');
+  document.querySelectorAll('.opt-btn.selected').forEach(btn => btn.classList.remove('selected'));
+  // Reset photo buttons and thumbs
+  PHOTOS.forEach(p => {
+    const btn = document.getElementById('btn-' + p.id);
+    const thumb = document.getElementById('thumb-' + p.id);
+    const fileInput = document.getElementById('file-' + p.id);
+    if (btn) { btn.classList.remove('taken'); btn.innerHTML = '<span>📷</span> Take'; }
+    if (thumb) { thumb.src = ''; thumb.classList.remove('visible'); }
+    if (fileInput) fileInput.value = '';
+  });
+  // Reset skip toggles
+  ['roofB','roofC'].forEach(roof => {
+    if (skipState[roof]) { skipState[roof] = false; toggleSkip(roof); }
+  });
+  // Set today's date again
+  const dateEl = document.getElementById('f-date');
+  if (dateEl) dateEl.value = new Date().toISOString().split('T')[0];
+  // Go back to start
+  goTo(0);
+  updateProgress();
+  showToast('✓ Cleared — ready for new survey');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
